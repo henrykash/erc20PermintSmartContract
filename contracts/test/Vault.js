@@ -78,7 +78,7 @@ describe("ERC20Permit", function () {
       deadline
     )
 
-    await vault.depositWithPermit(amount, token,  deadline, v, r, s)
+    await vault.depositWithPermit(amount, token, v, r, s)
     expect(await token.balanceOf(vault.address)).to.equal(amount)
   })
 })

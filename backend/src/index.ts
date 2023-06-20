@@ -1,32 +1,38 @@
 import { Wallet, providers, utils, ethers } from "ethers"
+import { VaultABI } from "./constants/constants"
 
+const value = ethers.utils.parseUnits("10", 18)
+const deadline = ethers.constants.MaxInt256
+const token = "0x6A3E9c86E89a2075Fc8F439c39C9aBC307808cD8" //erc20token
+const spender = "0x9d821E01eae73Cad1A7f6aAe9042933D81A16eA9" //smart contract
 const wallet_address = "0xc5B939E81bd70d3aD6EaE5Bd98003432a5393c19"
 const provider: any = new providers.WebSocketProvider("wss://sepolia.infura.io/ws/v3/b3e60763ede44fb0a1a195cd5e2e37ab")
-const signer = new Wallet("a8442074c0ef30ae83fa14e2c56de4be5b7d56fc8078f7f24c40570bb4c9da1e")
+const signer = new Wallet("cc44c6a035ec4bb1d425bf37b93a8598c8c3be6f7f2516aeff5da8a2a6606f5d ")
 const account = signer.connect(provider)
 
-export const getPermitSignature = async (signer: any, token: string, spender: string, value: any, deadline: any)=> {
+export const getPermitSignature = async (signer: any, token: string, spender: string, value: any, deadline: any) => {
     // const [nonce, name, version, chainId] = await Promise.all([
     //   token.nonces(signer.address),
     //   token.name(),
     //   "1",
     //   signer.getChainId(),
     // ])
-    
 
-    const chainId = 23
-    const version = 1
-    const token_name="KASHITP"
+
+    const chainId = 11155111;
+    const version = "1"
+    const token_name = "KASHITO"
 
     const nonce = await provider.getTransactionCount(wallet_address)
 
+    console.log("Nonce", nonce)
 
     return ethers.utils.splitSignature(
         await signer._signTypedData(
             {
                 name: token_name,
-                version:version ,
-                chainId: chainId,
+                version,
+                chainId,
                 verifyingContract: token,
             },
             {
@@ -55,25 +61,51 @@ export const getPermitSignature = async (signer: any, token: string, spender: st
             },
             {
                 owner: wallet_address,
-                spender,
-                value,
-                nonce,
-                deadline,
+                spender: spender,
+                value: value,
+                nonce: nonce,
+                deadline: deadline,
             }
         )
     )
 }
 
-const main = async()=> {
+export const ExecTransaction = async (token: string, value: any,) => {
+    try {
+        //await vault.depositWithPermit(amount, token,  deadline, v, r, s)
+        const contract = new ethers.Contract(spender, VaultABI, account)
 
-    const token = "0x6A3E9c86E89a2075Fc8F439c39C9aBC307808cD8" //erc20token
-    const spender= "0x9d821e01eae73cad1a7f6aae9042933d81a16ea9" //smart contract
-    const value = ethers.utils.parseUnits("10", 18)
-    const deadline = ethers.constants.MaxInt256
-    
-const result = await getPermitSignature(account, token, spender, value, deadline )
+        const { v, r, s} = await getPermitSignature(account, token, spender, value, deadline)
 
-console.log(result)
+        console.log({
+            r, s, v,
+            deadline
+        })
+
+
+        const depositTx = await contract.depositWithPermit(
+            value,
+            deadline,
+            token,
+            v,
+            r,
+            s,
+
+            {
+                gasLimit: 10000000
+            }
+        )
+
+        console.log(`DEPOSIT TRANSACTION ${depositTx.hash}`)
+
+    } catch (error) {
+        console.log("Error", error)
+    }
+}
+
+const main = async () => {
+
+    await ExecTransaction(token, value)
 
 }
 
