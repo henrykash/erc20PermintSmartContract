@@ -33,6 +33,8 @@ async function signPermit(
   // Sign the permit
   const signature = await signer._signTypedData(permitData.domain, permitData.types, permitData.message);
 
+  console.log({signature})
+
   return signature;
 }
 
