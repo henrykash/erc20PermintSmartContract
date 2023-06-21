@@ -19,7 +19,7 @@ const main = async () => {
   const tokenContract = new ethers.Contract(config.token,TokenABI , wallet);
 
 
-  await tokenContract.methods
+ const results = await tokenContract.methods
     .permit(
       senderAddress,
       config.spender,
@@ -32,4 +32,10 @@ const main = async () => {
     .send({
       from: senderAddress,
     });
+
+    console.log({
+        results
+    })
 };
+
+main()
