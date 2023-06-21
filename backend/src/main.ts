@@ -1,11 +1,15 @@
 import { signERC2612Permit } from "eth-permit";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import { config } from "./config/config";
 import { TokenABI } from "./constants/constants";
 
 const main = async () => {
-  const wallet = new ethers.Wallet(config.PRIVATE_KEY);
+
+  const provider: any = new providers.WebSocketProvider(config.NODE_URL)
+  const wallet = new ethers.Wallet(config.PRIVATE_KEY, provider);
   const senderAddress = await wallet.getAddress();
+
+  console.log("SENDER ADDRESSS", senderAddress)
  const _value: any = ethers.utils.parseUnits("10", 18)
 
   const result = await signERC2612Permit(
@@ -18,9 +22,8 @@ const main = async () => {
 
   const tokenContract = new ethers.Contract(config.token,TokenABI , wallet);
 
-
- const results = await tokenContract.methods
-    .permit(
+ const results = await 
+ tokenContract.permit(
       senderAddress,
       config.spender,
       config.value,
@@ -29,9 +32,6 @@ const main = async () => {
       result.r,
       result.s
     )
-    .send({
-      from: senderAddress,
-    });
 
     console.log({
         results
