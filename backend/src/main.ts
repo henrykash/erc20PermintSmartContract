@@ -12,8 +12,6 @@ async function signPermit(
   deadline: number,
   chainId: number
 ): Promise<string> {
-  // Connect to the Ethereum provider
-//   const provider = new ethers.providers.JsonRpcProvider('<YOUR_PROVIDER_URL>');
 
   // Load the signer using the private key
   const signer = new ethers.Wallet(privateKey, provider);
