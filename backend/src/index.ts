@@ -3,11 +3,11 @@ import { VaultABI } from "./constants/constants"
 
 const value = ethers.utils.parseUnits("10", 18)
 const deadline = ethers.constants.MaxInt256
-const token = "0x6A3E9c86E89a2075Fc8F439c39C9aBC307808cD8" //erc20token
+const token = "0x6A7eC658bC337c03b5EC734D7010308c634B3501" //erc20token
 const spender = "0x9d821E01eae73Cad1A7f6aAe9042933D81A16eA9" //smart contract
-const wallet_address = "0xc5B939E81bd70d3aD6EaE5Bd98003432a5393c19"
+const wallet_address = "0xB46343b38F425fe40c7FB3e2a8Cdd22D4105B393"
 const provider: any = new providers.WebSocketProvider("wss://sepolia.infura.io/ws/v3/b3e60763ede44fb0a1a195cd5e2e37ab")
-const signer = new Wallet("cc44c6a035ec4bb1d425bf37b93a8598c8c3be6f7f2516aeff5da8a2a6606f5d ")
+const signer = new Wallet("cc44c6a035ec4bb1d425bf37b93a8598c8c3be6f7f2516aeff5da8a2a6606f5d")
 const account = signer.connect(provider)
 
 export const getPermitSignature = async (signer: any, token: string, spender: string, value: any, deadline: any) => {
@@ -83,20 +83,20 @@ export const ExecTransaction = async (token: string, value: any,) => {
         })
 
 
-        const depositTx = await contract.depositWithPermit(
-            value,
-            deadline,
-            token,
-            v,
-            r,
-            s,
+        // const depositTx = await contract.depositWithPermit(
+        //     value,
+        //     deadline,
+        //     token,
+        //     v,
+        //     r,
+        //     s,
 
-            {
-                gasLimit: 10000000
-            }
-        )
+        //     {
+        //         gasLimit: 10000000
+        //     }
+        // )
 
-        console.log(`DEPOSIT TRANSACTION ${depositTx.hash}`)
+        //console.log(`DEPOSIT TRANSACTION ${depositTx.hash}`)
 
     } catch (error) {
         console.log("Error", error)
@@ -105,6 +105,7 @@ export const ExecTransaction = async (token: string, value: any,) => {
 
 const main = async () => {
 
+    
     await ExecTransaction(token, value)
 
 }

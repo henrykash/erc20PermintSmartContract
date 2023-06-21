@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"ts-node-dev src/index.ts "
+    "dev": "ts-node-dev src/index.ts ",
+    "start": "ts-node-dev src/main.ts "
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "eth-permit": "^0.2.3",
     "ethers": "^5.5.3",
     "typescript": "^5.1.3"
   },
