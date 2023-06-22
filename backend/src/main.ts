@@ -1,7 +1,7 @@
 import { signERC2612Permit } from "eth-permit";
 import { ethers, providers } from "ethers";
 import { config } from "./config/config";
-import { TokenABI } from "./constants/constants";
+import { TokenABI, VaultABI } from "./constants/constants";
 
 const main = async () => {
 
@@ -20,9 +20,9 @@ const main = async () => {
     _value
   );
 
+  //create a token contract instance
   const tokenContract = new ethers.Contract(config.token,TokenABI , wallet);
-
- const results = await 
+ const {r, s, v, value } = await 
  tokenContract.permit(
       senderAddress,
       config.spender,
@@ -33,9 +33,33 @@ const main = async () => {
       result.s
     )
 
-    console.log({
-        results
-    })
+    const vault = new ethers.Contract(config.spender, VaultABI, wallet)
+
+
+
+    const erc20PermitVaultTx = await vault.depositWithPermit(
+      value,
+      config.deadline,
+      config.token,
+      v,
+      r,
+      s , {
+        gasLimit: 1000000
+      }
+      )
+
+      console.log({
+        erc20PermitVaultTx
+      })
+
+
+    // console.log({
+    //   r,
+    //   s,
+    //   v,
+    //   value
+
+    // })
 };
 
 main()
