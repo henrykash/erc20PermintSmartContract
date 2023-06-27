@@ -1,5 +1,5 @@
 import { Wallet, providers, utils, ethers } from "ethers"
-import { TokenABI, VaultABI } from "./constants/constants"
+import { EscrowABI, TokenABI, VaultABI } from "./constants/constants"
 import { config } from "./config/config"
 
 
@@ -73,7 +73,7 @@ export const getPermitSignature = async (signer: any, token: string, spender: st
 export const ExecTransaction = async (token: string, value: any,) => {
     try {
         //await vault.depositWithPermit(amount, token,  deadline, v, r, s)
-        const contract = new ethers.Contract(config.spender, VaultABI, account)
+        const contract = new ethers.Contract(config.spender, EscrowABI, account)
 
         const { v, r, s} = await getPermitSignature(account, token, config.spender, value, config.deadline)
 
@@ -81,22 +81,22 @@ export const ExecTransaction = async (token: string, value: any,) => {
             r, s, v,
             
         })
+  
+    
+        const depositTx = await contract.depositWithPermit(
+            token,
+            value,
+            config.deadline,
+            v,
+            r,
+            s,
 
+            {
+                gasLimit: 10000000
+            }
+        )
 
-        // const depositTx = await contract.depositWithPermit(
-        //     value,
-        //     deadline,
-        //     token,
-        //     v,
-        //     r,
-        //     s,
-
-        //     {
-        //         gasLimit: 10000000
-        //     }
-        // )
-
-        //console.log(`DEPOSIT TRANSACTION ${depositTx.hash}`)
+        console.log(`DEPOSIT TRANSACTION ${depositTx.hash}`)
 
     } catch (error) {
         console.log("Error", error)

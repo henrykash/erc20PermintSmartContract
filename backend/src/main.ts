@@ -35,8 +35,6 @@ const main = async () => {
 
     const vault = new ethers.Contract(config.spender, VaultABI, wallet)
 
-
-
     const erc20PermitVaultTx = await vault.depositWithPermit(
       value,
       config.deadline,
