@@ -1,5 +1,5 @@
 import { Wallet, providers, utils, ethers } from "ethers"
-import { VaultABI } from "./constants/constants"
+import { TokenABI, VaultABI } from "./constants/constants"
 import { config } from "./config/config"
 
 
@@ -7,27 +7,30 @@ const provider: any = new providers.WebSocketProvider(config.NODE_URL)
 const signer = new Wallet(config.PRIVATE_KEY)
 const account = signer.connect(provider)
 
+ //create a token contract instance
+ const tokenContract = new ethers.Contract(config.token,TokenABI , account);
+
 export const getPermitSignature = async (signer: any, token: string, spender: string, value: any, deadline: any) => {
-    // const [nonce, name, version, chainId] = await Promise.all([
-    //   token.nonces(signer.address),
-    //   token.name(),
-    //   "1",
-    //   signer.getChainId(),
-    // ])
+    const [nonce, name, version, chainId] = await Promise.all([
+        tokenContract.nonces(signer.address),
+        tokenContract.name(),
+      "1",
+    account.getChainId(),
+    ])
 
 
-    const chainId = 11155111;
-    const version = "1"
-    const token_name = "KASHITO"
+    // const chainId = 11155111;
+    // const version = "1"
+    // const token_name = "KASHITO"
 
-    const nonce = await provider.getTransactionCount(config.wallet_address)
+    // const nonce = await provider.getTransactionCount(config.wallet_address)
 
     console.log("Nonce", nonce)
 
     return ethers.utils.splitSignature(
         await signer._signTypedData(
             {
-                name: token_name,
+                name: name,
                 version,
                 chainId,
                 verifyingContract: token,

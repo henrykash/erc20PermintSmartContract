@@ -4,6 +4,7 @@
     "hardhat": "^2.15.0"
   },
   "dependencies": {
-    "@rari-capital/solmate": "^6.4.0"
+    "@rari-capital/solmate": "^6.4.0",
+    "dotenv": "^16.3.1"
   }
 }
