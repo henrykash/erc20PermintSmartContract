@@ -14,6 +14,6 @@ export const config = {
   value: ethers.utils.parseUnits("10", 18),
   deadline: ethers.constants.MaxInt256,
   token: "0x6A7eC658bC337c03b5EC734D7010308c634B3501", //erc20token
-  spender: "0xF61f51f3330F6a5db0Cd66de25F9Af20965ac4eE", //smart contract
+  spender: "0x2aa13515fc906e9e8b77938532bf6aecdf973fce", //smart contract
   wallet_address: "0xB46343b38F425fe40c7FB3e2a8Cdd22D4105B393",
 };
