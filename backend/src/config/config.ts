@@ -11,9 +11,9 @@ export const config = {
   NODE_URL: process.env.NODE_URL!,
   SPHRI_STAKING_CONTRACT: "0xfd9E21AFbAb96eC91ca9c94C51894cdeBe9238eA",
   PRIVATE_KEY: process.env.PRIVATE_KEY!,
-  value: ethers.utils.parseUnits("10", 18),
+  value: ethers.utils.parseUnits("10000", 18),
   deadline: ethers.constants.MaxInt256,
   token: "0x6A7eC658bC337c03b5EC734D7010308c634B3501", //erc20token
-  spender: "0x7ce7De93b21e065365EFff75f264eC03f3470E3c", //smart contract
+  spender: "0x06af51185F591827Eb1AC75011e05EB4D148D551", //smart contract
   wallet_address: "0xB46343b38F425fe40c7FB3e2a8Cdd22D4105B393",
 };

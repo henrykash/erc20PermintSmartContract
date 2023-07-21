@@ -42,7 +42,7 @@ const main = async () => {
       v,
       r,
       s , {
-        gasLimit: 1000000
+        gasLimit: 7000000
       }
       )
 
